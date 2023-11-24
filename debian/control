@@ -1,0 +1,13 @@
+Source: num-of-files
+Section: utils
+Priority: optional
+Maintainer: Dmytro Krapyvianskyi <dimka670020040@gmail.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 4.5.0
+Homepage: https://github.com/ShadowDrake21/Krapyvianskyi_OS
+
+Package: num-of-files
+Architecture: all
+Depends: ${misc:Depends}
+Description: A simple script to count files in /etc directory
+ The script counts files in /etc directory.
