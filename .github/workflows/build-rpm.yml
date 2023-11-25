@@ -25,6 +25,12 @@ jobs:
           yum install -y rpm-build rpmdevtools wget unzip
           rpmdev-setuptree
 
+      - name: Set up RPM build directories
+        run: |
+          cd rpmbuild
+          rpmdev-setuptree
+          cd ..
+
       - name: Build RPM
         run: |
           cp rpm/numOfFiles.spec ~/rpmbuild/SPECS/

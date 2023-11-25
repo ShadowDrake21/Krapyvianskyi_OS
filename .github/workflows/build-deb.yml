@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'deb/**/*'
+      - 'debian/**/*'
       - '**.sh'
   workflow_dispatch:
 
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository 
         uses: actions/checkout@v2
 
       - name: Install DEB build tools
@@ -23,7 +23,7 @@ jobs:
 
       - name: Build DEB
         run: |
-          cd deb
+          cd debian
           dh_make -s -y
           dpkg-buildpackage -us -uc
 
@@ -31,4 +31,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: deb-packages
-          path: deb/*.deb
+          path: debian/*.deb
+ 
