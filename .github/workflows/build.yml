@@ -8,6 +8,7 @@ on:
       - 'rpm/**.spec'
       - 'deb/**/*'
       - '**.sh'
+  workflow_dispatch:
 
 jobs:
   build:
