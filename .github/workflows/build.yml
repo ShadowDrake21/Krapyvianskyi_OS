@@ -28,7 +28,7 @@ jobs:
       - name: Build RPM
         run: |
           cp rpm/numOfFiles.spec ~/rpmbuild/SPECS/
-          cd rpmbuild/SOURCES/
+          cd rpmbuild/SOURCES/  
           wget https://github.com/ShadowDrake21/Krapyvianskyi_OS/archive/main.zip
           cd ../../
           rpmbuild -bs --define "dist .generic" rpmbuild/SPECS/numOfFiles.spec
