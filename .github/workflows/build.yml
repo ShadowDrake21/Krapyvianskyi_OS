@@ -14,18 +14,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container:
-      image: centos:7  # Use CentOS 7
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Install build tools
         run: |
-          yum install -y rpm-build rpmdevtools wget unzip
+	  apt-get update
+          apt-get install -y rpm-build rpmdevtools wget unzip
           rpmdev-setuptree
-          yum install -y debhelper dh-make
+          apt-get install -y debhelper dh-make
 
       - name: Build RPM
         run: |
