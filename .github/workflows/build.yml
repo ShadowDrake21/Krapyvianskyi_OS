@@ -1,0 +1,49 @@
+name: Build RPM and Deb Packages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'rpm/**.spec'
+      - 'deb/**/*'
+      - '**.sh'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install build tools
+        run: |
+          yum install -y rpm-build rpmdevtools wget unzip
+          rpmdev-setuptree
+          apt-get update
+          apt-get install -y debhelper dh-make
+
+      - name: Build RPM
+        run: |
+          cp rpm/numOfFiles.spec ~/rpmbuild/SPECS/
+          cd rpmbuild/SOURCES/
+          wget https://github.com/ShadowDrake21/Krapyvianskyi_OS/archive/main.zip
+          cd ../../
+          rpmbuild -bs --define "dist .generic" rpmbuild/SPECS/numOfFiles.spec
+          rpmbuild --rebuild rpmbuild/SRPMS/num-of-files-1.0-1.x86_64.rpm
+          
+      - name: Build DEB
+        run: |
+          cd deb
+          dh_make -s -y
+          dpkg-buildpackage -us -uc
+
+      - name: Upload Packages
+        uses: actions/upload-artifact@v2
+        with:
+          name: packages
+          path: |
+            ~/rpmbuild/RPMS/**/*.rpm
+            ~/rpmbuild/SRPMS/**/*.src.rpm
+            deb/**/*.deb
