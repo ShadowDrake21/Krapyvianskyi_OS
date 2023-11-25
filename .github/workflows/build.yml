@@ -20,10 +20,10 @@ jobs:
 
       - name: Install build tools
         run: |
-	  apt-get update
-          apt-get install -y rpm-build rpmdevtools wget unzip
-          rpmdev-setuptree
-          apt-get install -y debhelper dh-make
+	  sudo apt-get update
+          sudo apt-get install -y rpm-build rpmdevtools wget unzip
+          sudo rpmdev-setuptree
+          sudo apt-get install -y debhelper dh-make
 
       - name: Build RPM
         run: |
