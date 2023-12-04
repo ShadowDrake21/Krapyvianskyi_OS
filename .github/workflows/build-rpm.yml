@@ -25,7 +25,7 @@ jobs:
           yum install -y rpm-build rpmdevtools wget unzip
           rpmdev-setuptree
 
-      - name: Build RPM
+         - name: Build RPM
         run: |
           cp rpm/numOfFiles.spec ~/rpmbuild/SPECS/
           cd ~/rpmbuild/SOURCES/
@@ -35,12 +35,12 @@ jobs:
           rmdir Krapyvianskyi_OS-main || true  # Use "|| true" to ignore errors if the directory is not empty
           cd ~/rpmbuild/
           rpmbuild -bs --define "dist .generic" SPECS/numOfFiles.spec
-          rpmbuild --rebuild SRPMS/num-of-files-1.0-1.src.rpm
+          rpmbuild --rebuild SRPMS/*.src.rpm
 
       - name: Upload RPM
         uses: actions/upload-artifact@v2
-        with: 
+        with:
           name: rpm-package
           path: |
-            ~/rpmbuild/RPMS/**/*.rpm
-            ~/rpmbuild/SRPMS/**/*.src.rpm  
+            RPMS/**/*.rpm
+            SRPMS/*.src.rpm
