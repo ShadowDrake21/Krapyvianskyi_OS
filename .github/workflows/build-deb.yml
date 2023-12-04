@@ -24,7 +24,7 @@ jobs:
 
       - name: Build DEB
         run: |
-          cd Krapyvianskyi_OS  
+          cd debian
           debuild -us -uc
 
       - name: Upload DEB
