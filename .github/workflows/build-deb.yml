@@ -30,7 +30,7 @@ jobs:
           rm -r Krapyvianskyi_OS-main
 
       - name: Create original tar file
-  	run: tar --create --gzip --file num-of-files_1.0.orig.tar.gz --directory=Krapyvianskyi_OS-main .
+        run: tar --create --gzip --file num-of-files_1.0.orig.tar.gz --directory=Krapyvianskyi_OS-main .
 
       - name: Run debuild
         run: debuild -us -uc
