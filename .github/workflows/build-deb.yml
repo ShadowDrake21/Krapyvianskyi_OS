@@ -24,7 +24,6 @@ jobs:
 
       - name: Build DEB
         run: |
-          cp debian/* ~/rpmbuild/
           cd debian
           wget https://github.com/ShadowDrake21/Krapyvianskyi_OS/archive/main.zip
           unzip main.zip
