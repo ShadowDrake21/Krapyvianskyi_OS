@@ -29,6 +29,9 @@ jobs:
           mv Krapyvianskyi_OS-main/debian/* debian/
           rm -r Krapyvianskyi_OS-main
 
+      - name: Create original tar file
+        run: tar --create --gzip --file num-of-files_1.0.orig.tar.gz --directory=debian Krapyvianskyi_OS-main
+
       - name: Run debuild
         run: debuild -us -uc
 
