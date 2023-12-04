@@ -27,7 +27,6 @@ jobs:
           wget https://github.com/ShadowDrake21/Krapyvianskyi_OS/archive/main.zip
           unzip main.zip
           mv Krapyvianskyi_OS-main/debian/* debian/
-          mv Krapyvianskyi_OS-main/* .
           rm -r Krapyvianskyi_OS-main
 
       - name: Run debuild
