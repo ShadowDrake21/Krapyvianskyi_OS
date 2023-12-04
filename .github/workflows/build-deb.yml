@@ -24,13 +24,9 @@ jobs:
 
       - name: Build DEB
         run: |
-          cd debian
           wget https://github.com/ShadowDrake21/Krapyvianskyi_OS/archive/main.zip
           unzip main.zip
           mv Krapyvianskyi_OS-main debian
-          cd ..
-          mv debian/Krapyvianskyi_OS-main ../num-of-files_1.0.orig.tar.gz
-          cd ..
           debuild -us -uc
 
       - name: Upload DEB
