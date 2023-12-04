@@ -30,7 +30,9 @@ jobs:
           rm -r Krapyvianskyi_OS-main
 
       - name: Build DEB
-        run: debuild -us -uc
+        run: | 
+          tar --create --gzip --file num-of-files_1.0.orig.tar.gz --directory=.. Krapyvianskyi_OS-main
+          debuild -us -uc
 
       - name: Upload DEB
         uses: actions/upload-artifact@v2
