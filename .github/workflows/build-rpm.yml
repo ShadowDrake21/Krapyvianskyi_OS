@@ -43,4 +43,4 @@ jobs:
           name: rpm-package
           path: |
             ~/rpmbuild/RPMS/**/*.rpm
-            ~/rpmbuild/SRPMS/**/*.src.rpm
+            ~/rpmbuild/SRPMS/**/*.src.rpm  
