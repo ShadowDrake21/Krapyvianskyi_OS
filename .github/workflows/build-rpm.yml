@@ -32,7 +32,7 @@ jobs:
           wget https://github.com/ShadowDrake21/Krapyvianskyi_OS/archive/main.zip
           unzip main.zip
           mv Krapyvianskyi_OS-main/* .
-          rmdir Krapyvianskyi_OS-main
+          rmdir Krapyvianskyi_OS-main || true  # Use "|| true" to ignore errors if the directory is not empty
           cd ~/rpmbuild/
           rpmbuild -bs --define "dist .generic" SPECS/numOfFiles.spec
           rpmbuild --rebuild SRPMS/num-of-files-1.0-1.src.rpm
