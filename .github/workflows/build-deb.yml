@@ -1,35 +1,42 @@
-name: Build Deb Package
+name: Build DEB Package
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'debian/**/*'
+      - 'debian/**'
       - '**.sh'
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository 
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install DEB build tools
+      - name: Install build tools
         run: |
-          sudo apt-get install -y debhelper dh-make
+          sudo apt-get update
+          sudo apt-get install -y build-essential debhelper dh-make devscripts
 
       - name: Build DEB
         run: |
+          cp debian/* ~/rpmbuild/
           cd debian
-          dh_make -s -y
-          dpkg-buildpackage -us -uc
+          wget https://github.com/ShadowDrake21/Krapyvianskyi_OS/archive/main.zip
+          unzip main.zip
+          mv Krapyvianskyi_OS-main debian
+          cd ..
+          debuild -us -uc
 
-      - name: Upload DEB Packages
+      - name: Upload DEB
         uses: actions/upload-artifact@v2
         with:
-          name: deb-packages
-          path: debian/*.deb
- 
+          name: deb-package
+          path: |
+            ../num-of-files_1.0-1_amd64.deb
+            ../num-of-files_1.0-1.debian.tar.xz
+            ../num-of-files_1.0-1.dsc
+            ../num-of-files_1.0.orig.tar.xz
