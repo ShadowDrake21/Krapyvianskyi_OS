@@ -31,7 +31,7 @@ jobs:
 
       - name: Build DEB
         run: | 
-          tar --create --gzip --file num-of-files_1.0.orig.tar.gz --directory=.. Krapyvianskyi_OS-main
+          tar --create --gzip --file ../num-of-files_1.0.orig.tar.gz --directory=../ Krapyvianskyi_OS-main
           debuild -us -uc
 
       - name: Upload DEB
