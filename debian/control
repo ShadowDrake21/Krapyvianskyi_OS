@@ -6,7 +6,7 @@ Build-Depends: debhelper (>=9)
 Standards-Version: 4.5.0
 Homepage: https://github.com/ShadowDrake21/Krapyvianskyi_OS
 
-Package: debian
+Package: num-of-files
 Architecture: all
 Depends: ${misc:Depends}
 Description: A simple script to count files in /etc directory
