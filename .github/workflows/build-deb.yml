@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
+      - '.github/workflows/**'
       - 'debian/**'
-      - '**.sh'
-  workflow_dispatch:
+      - '*.sh'
 
 jobs:
   build:
@@ -26,13 +26,10 @@ jobs:
         run: |
           wget https://github.com/ShadowDrake21/Krapyvianskyi_OS/archive/main.zip
           unzip main.zip
-          mv Krapyvianskyi_OS-main/debian/* debian/
+          mv Krapyvianskyi_OS-main/* .
           rm -r Krapyvianskyi_OS-main
 
-      - name: Create original tar file
-        run: tar --create --gzip --file num-of-files_1.0.orig.tar.gz --directory=Krapyvianskyi_OS-main .
-
-      - name: Run debuild
+      - name: Build DEB
         run: debuild -us -uc
 
       - name: Upload DEB
@@ -40,7 +37,7 @@ jobs:
         with:
           name: deb-package
           path: |
-            ../num-of-files_1.0-1_amd64.deb
+            ../num-of-files_1.0-1_all.deb
             ../num-of-files_1.0-1.debian.tar.xz
             ../num-of-files_1.0-1.dsc
             ../num-of-files_1.0.orig.tar.xz
