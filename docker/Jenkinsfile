@@ -2,20 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('Build docker image') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t jenkins-image .'
+                    // Build Docker image
+                    def dockerImage = docker.build("image-lab-os:latest", "--file /home/dmytro/Downloads/docker/Dockerfile .")
                 }
             }
         }
 
-        stage('Run docker container') {
+        stage('Run Docker container') {
             steps {
                 script {
                     // Run Jenkins container
-                    def jenkinsContainerId = sh(script: 'docker run -d -p 8080:8080 -p 50000:50000 jenkins-image', returnStatus: true).trim()
-                    
+                    def jenkinsContainerId = sh(script: 'docker run -d -p 8087:8080 -p 50007:50000 image-lab-os', returnStdout: true).trim()
+
+                    // Wait for Jenkins to be ready
                     sh "docker exec ${jenkinsContainerId} /bin/bash -c 'while [[ ! -f /var/jenkins_home/secrets/initialAdminPassword ]]; do sleep 1; done'"
                 }
             }
@@ -24,9 +26,14 @@ pipeline {
         stage('Clone repository and build packages') {
             steps {
                 script {
-                    git url: 'https://github.com/ShadowDrake21/Krapyvianskyi_OS'
-                    dir('Krapyvianskyi_OS/rpm') {
-                        sh 'rpmbuild -ba numOfFiles.spec'
+                    catchError(buildResult: 'SUCCESS') {
+                        // Clone repository
+                        git url: 'https://github.com/ShadowDrake21/Krapyvianskyi_OS', branch: 'main'
+
+                        // Build RPM packages
+                        dir('Krapyvianskyi_OS/rpm') {
+                            sh 'rpmbuild -ba numOfFiles.spec'
+                        }
                     }
                 }
             }
@@ -35,9 +42,10 @@ pipeline {
         stage('Install RPM and execute script') {
             steps {
                 script {
-                    // Install RPM and execute script
-                    sh 'docker exec ${jenkinsContainerId} /bin/bash -c "yum install -y /root/rpmbuild/RPMS/x86_64/num-of-files-1.0-1.x86_64.rpm"'
-                    sh 'docker exec ${jenkinsContainerId} /bin/bash -c "/usr/bin/num-of-files.sh"'
+                    def jenkinsContainerId = sh(script: 'docker run -d -p 8087:8080 -p 50007:50000 image-lab-os', returnStdout: true).trim()
+                    // Install RPM and execute script in Jenkins container
+                    sh "docker exec ${jenkinsContainerId} /bin/bash -c 'yum install -y /root/rpmbuild/RPMS/x86_64/num-of-files-1.0-1.x86_64.rpm'"
+                    sh "docker exec ${jenkinsContainerId} /bin/bash -c '/usr/bin/num-of-files.sh'"
                 }
             }
         }
