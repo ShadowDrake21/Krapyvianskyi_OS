@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Run Jenkins container
-                    def jenkinsContainerId = sh(script: 'docker run -d -p 8087:8080 -p 50007:50000 image-lab-os', returnStdout: true).trim()
+                    def jenkinsContainerId = sh(script: 'docker run -d -p 8090:8080 -p 50010:50000 image-lab-os', returnStdout: true).trim()
 
                     // Wait for Jenkins to be ready
                     sh "docker exec ${jenkinsContainerId} /bin/bash -c 'while [[ ! -f /var/jenkins_home/secrets/initialAdminPassword ]]; do sleep 1; done'"
@@ -42,10 +42,14 @@ pipeline {
         stage('Install RPM and execute script') {
             steps {
                 script {
-                    def jenkinsContainerId = sh(script: 'docker run -d -p 8087:8080 -p 50007:50000 image-lab-os', returnStdout: true).trim()
-                    // Install RPM and execute script in Jenkins container
-                    sh "docker exec ${jenkinsContainerId} /bin/bash -c 'yum install -y /root/rpmbuild/RPMS/x86_64/num-of-files-1.0-1.x86_64.rpm'"
+                    catchError(buildResult: 'SUCCESS') {
+                    // Get the Jenkins container ID
+                    def jenkinsContainerId = sh(script: 'docker ps -q --filter ancestor=image-lab-os', returnStdout: true).trim()
+
+                    // Install RPM and execute script
+                    sh "docker exec ${jenkinsContainerId} /bin/bash -c 'apt-get install -y /root/rpmbuild/RPMS/x86_64/num-of-files-1.0-1.x86_64.rpm'"
                     sh "docker exec ${jenkinsContainerId} /bin/bash -c '/usr/bin/num-of-files.sh'"
+                    }
                 }
             }
         }
